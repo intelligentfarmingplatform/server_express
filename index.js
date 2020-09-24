@@ -8,11 +8,12 @@ const userRoute = require("./routes/user")
 
 const port = process.env.PORT || 3001
 
+app.use(cors());
 app.use(bodyPasser.json());
 app.use(bodyPasser.urlencoded({extended: true}));
 
-app.get('/', (req, res) => res.send('Hello World!'))
-app.use("/api/user",userRoute);
+// app.get('/', (req, res) => res.send('Hello World!'))
+// app.use("/api/user",userRoute);
 
 
 db.sequelize.sync()
