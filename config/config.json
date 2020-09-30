@@ -14,10 +14,10 @@
     "dialect": "mysql"
   },
   "production": {
-    "username": "admin_ifp",
-    "password": "ac187@1Z871",
-    "database": "db_ifp",
-    "host": "itcmtc.com",
+    "username": "maeteeps_fsync",
+    "password": "26042532",
+    "database": "maeteeps_fsync",
+    "host": "ichigozcloud.tk",
     "dialect": "mysql"
   }
 }
