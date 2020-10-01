@@ -33,6 +33,7 @@ exports.create = (req, res) =>{
         userName: req.body.userName,
         password: req.body.password,
         email: req.body.email,
+        status_level: req.body.status
     })
     .then((data ) =>{
         res.status(200).json({
@@ -52,6 +53,7 @@ exports.update = (req, res ) => {
         userName: req.body.userName,
         password: req.body.password,
         email: req.body.email,
+        status_level: req.body.status
     },
     {
         where:{
