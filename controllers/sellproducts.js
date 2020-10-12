@@ -72,7 +72,8 @@ exports.update = (req, res ) => {
         res.status(200).json({
             statusCode: 201,
             message: "User Update Successfully",
-            data : data
+            data: data,
+            id : req.params.id
 
         });
     })
