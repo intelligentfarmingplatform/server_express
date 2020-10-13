@@ -36,7 +36,7 @@ exports.create = (req, res) =>{
         sell_id: req.body.sell_id,
         productname: req.body.productname,
         productprice: req.body.productnumber,
-        productnumber: req.body.productdetail,
+        productnumber: req.body.productnumber,
         productdetail: req.body.productdetail,
         producttab: req.body.producttab,
         productimg: 'xxx.jpg'
@@ -154,7 +154,7 @@ exports.img = async(req, res,) => {
                    data:data,
                    namefile : file.name
                })
-           });
+           }); 
         }catch(err){
             res.status(400).json({
                 statusCode: 400,
