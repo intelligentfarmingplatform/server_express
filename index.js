@@ -8,6 +8,8 @@ const fileupload = require('express-fileupload');
 require('dotenv').config();
 const userRoute = require("./routes/user")
 const sellproductsRoute = require("./routes/sellproducts")
+const orderRoute = require("./routes/order")
+const loginRoute = require("./routes/login")
 
 
 const port = process.env.PORT || 3001
@@ -21,6 +23,8 @@ app.use(bodyPasser.urlencoded({extended: true}));
 app.get('/', (req, res) => res.send('Hello World!'))
 app.use('/api/user',userRoute);
 app.use('/api/sellproducts',sellproductsRoute);
+app.use('/api/order',orderRoute);
+app.use('/api/login',loginRoute);
 
 
 db.sequelize.sync()

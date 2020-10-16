@@ -113,14 +113,14 @@ exports.img = async(req, res,) => {
     console.log(file);
 
     if (!file.mimetype.startsWith("image")){
-        res.status(400).json({
+        return res.status(400).json({
             statusCode: 400,
             message: "Not an image file"
         })
     }
 
     if(file.size > process.env.MAX_FILE_UPLOAD){
-        res.status(400).json({
+        return res.status(400).json({
             statusCode: 400,
             message: "File size over 20MB"
         })
@@ -148,7 +148,7 @@ exports.img = async(req, res,) => {
                    } 
                }
            ).then(data => {
-               res.status(200).json({
+               return res.status(200).json({
                    statusCode: 201,
                    message: 'Update Img Successfully',
                    data:data,
