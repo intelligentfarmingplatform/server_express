@@ -10,6 +10,8 @@ const userRoute = require("./routes/user")
 const sellproductsRoute = require("./routes/sellproducts")
 const orderRoute = require("./routes/order")
 const loginRoute = require("./routes/login")
+const dblistRoute = require("./routes/dblist")
+const dbrealtimeRoute = require("./routes/dbrealtime")
 
 
 const port = process.env.PORT || 3001
@@ -25,6 +27,8 @@ app.use('/api/user',userRoute);
 app.use('/api/sellproducts',sellproductsRoute);
 app.use('/api/order',orderRoute);
 app.use('/api/login',loginRoute);
+app.use('/api/dblist',dblistRoute);
+app.use('/api/dbrealtime',dbrealtimeRoute);
 
 
 db.sequelize.sync()
