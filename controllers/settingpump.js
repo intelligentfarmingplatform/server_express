@@ -18,10 +18,10 @@ exports.update = (req, res ) => {
         humi: req.body.humi,
         ec: req.body.ec,
         water_level: req.body.water_level,
-        pump_a: req.body.pumpa,
-        pump_b: req.body.pumpb,
-        pump_c: req.body.pumpc,
-        pump_d: req.body.pumpd
+        pump_a: req.body.pump_a,
+        pump_b: req.body.pump_b,
+        pump_c: req.body.pump_c,
+        pump_d: req.body.pump_d
     },
     {
         where:{
@@ -30,8 +30,8 @@ exports.update = (req, res ) => {
     })
     .then((data) => {
         res.status(200).json({
-            statusCode: 201,
-            message: "Update Successfully",
+            
+           
             data: data,
         });
     })
