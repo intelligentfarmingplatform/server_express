@@ -1,4 +1,7 @@
 const db = require("../models");
+const {hashPassword, sendTokenResponse} = require("../utils/auth");
+
+
 
 exports.login = async(req, res ) => {
     const { username, password } = req.body;
@@ -14,10 +17,72 @@ exports.login = async(req, res ) => {
         }
     })
     .then((data) => {
-        res.status(200).json({
-            statusCode: 200,
-            message: "login Success",
-            data:data
-        })
+        if(data.length != 0){
+            // console.log(data.length);
+            return res.status(200).json({
+                statusCode: 200,
+                data : data,
+                status: "Success"
+            })
+        }else {
+            res.status.json({
+                statusCode: 400,
+                message:"ชื่อผู้ใช้หรือรห้สผ่านไม่ถูกต้อง"
+            });
+        }
+    }).catch((err) => {
+        res.status(500).json({
+            message:"ชื่อผู้ใช้หรือรห้สผ่านไม่ถูกต้อง"
+        });;
     })
 }
+
+
+
+exports.res = async(req, res ) => {
+    let { username, password, serial } = req.body;
+    password = await hashPassword(password);
+    console.log(password);
+    ///เช็คserail
+    db.User.findAll({
+        where:{
+            userName: username,
+        }
+    })
+     .then( async (data) => {
+         if(data.length == 0){
+            // password = hashPassword(password);      
+            db.User.create({
+                ////ซีเรียล#ff0000
+                userName: username,
+                password: password,
+                status_level: "members",
+                Serial: serial
+            })
+        .then(( data ) =>{
+            console.log(data.id);
+            sendTokenResponse(data.id, 200, res) //#ff0000
+            // res.status(200).json({
+            //     statusCode: 201,
+            //     message: "ทำการสมัครสมาชิกสำเร็จ",
+            //     data: data,
+
+            // }); 
+        })
+        .catch((err) => {
+            res.status(500).send(err);
+        });
+            
+        }else {
+            return res.status.json({
+                statusCode: 400,
+                message:"ชื่อผู้ใช้นี้มีอยู่ในระบบแล้ว"
+            });
+         }
+    }).catch((err) => {
+        res.status(500).json({
+            message:"ชื่อผู้ใช้นี้มีอยู่ในระบบแล้ว",
+        });
+    })
+}
+

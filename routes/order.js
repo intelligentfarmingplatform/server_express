@@ -4,6 +4,7 @@ const OrderController = require("../controllers/order");
 
 router.get("/", OrderController.findAll);
 router.get("/:id", OrderController.findOne);
+router.put("/:id", OrderController.changestatus);
 // router.get("/status/:id", OrderController.findstatus);
 // router.delete("/img/:id", Order.deleteimg);
 // router.post("/", Order.create);

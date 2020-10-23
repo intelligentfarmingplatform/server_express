@@ -33,7 +33,7 @@ exports.findOne = (req, res) =>{
 
 exports.create = (req, res) =>{
     db.tbl_sellproducts.create({
-        sell_id: req.body.sell_id,
+        serial_number: req.body.sell_id,
         productname: req.body.productname,
         productprice: req.body.productnumber,
         productnumber: req.body.productnumber,
@@ -56,7 +56,7 @@ exports.create = (req, res) =>{
 exports.update = (req, res ) => {
     db.tbl_sellproducts.update  (
         {
-            sell_id: req.body.sell_id,
+            serial_number: req.body.sell_id,
             productname: req.body.productname,
             productprice: req.body.productprice,
             productnumber: req.body.productnumber,
@@ -111,21 +111,6 @@ exports.img = async(req, res,) => {
     }
     const file = req.files.files;
     console.log(file);
-
-    if (!file.mimetype.startsWith("image")){
-        return res.status(400).json({
-            statusCode: 400,
-            message: "Not an image file"
-        })
-    }
-
-    if(file.size > process.env.MAX_FILE_UPLOAD){
-        return res.status(400).json({
-            statusCode: 400,
-            message: "File size over 20MB"
-        })
-    }
-
     file.name = `photo_${req.params.id}${
         path.parse(file.name).ext
     }`;

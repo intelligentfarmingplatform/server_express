@@ -3,6 +3,8 @@ const router = express.Router();
 const loginController = require("../controllers/login");
 
 router.post("/", loginController.login);
+router.post("/res", loginController.res);
+// router.get("/:id", loginController.findOne);
 // router.get("/:id", loginController.findOne);
 // router.get("/status/:id", loginController.findstatus);
 // router.delete("/img/:id", login.deleteimg);

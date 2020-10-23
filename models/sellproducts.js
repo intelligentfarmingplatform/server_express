@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   sellproducts.init({
-    sell_id: DataTypes.STRING,
+    serial_number: DataTypes.STRING,
     productimg: DataTypes.BLOB,
     productname: DataTypes.STRING,
     productdetail: DataTypes.TEXT,

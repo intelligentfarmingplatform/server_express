@@ -23,6 +23,27 @@ exports.findOne = (req, res) => {
     })
 }
 
+exports.changestatus = (req, res) => {
+    db.tbl_order.update (
+        {
+            status_order: "Delivery"
+        },
+        {
+            where:{
+                id: req.params.id
+            }
+        })
+        .then((data) => {
+            res.status(200).json({
+                statusCode: 201,
+                message: "Status Update Successfully",
+                data: data
+            })
+        }).catch((err) => {
+            res.status(500).send(err);
+        })
+}
+
 // exports.findstatus = (req, res) => {
 //     const staus = req.params.id;
 //     const sql =  `select * form tbl_order where ${staus}`;
