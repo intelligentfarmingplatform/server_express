@@ -23,7 +23,6 @@ app.use(fileupload());
 app.use(bodyPasser.json());
 app.use(bodyPasser.urlencoded({extended: true}));
 
-app.get('/', (req, res) => res.send('Hello World!'))
 app.use('/api/user',userRoute);
 app.use('/api/sellproducts',sellproductsRoute);
 app.use('/api/order',orderRoute);
