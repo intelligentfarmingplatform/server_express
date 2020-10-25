@@ -18,11 +18,10 @@ exports.login = async(req, res ) => {
     })
     .then((data) => {
         if(data.length != 0){
-            // console.log(data.length);
             return res.status(200).json({
                 statusCode: 200,
-                data : data,
-                status: "Success"
+                // data : data,
+                serial: data[0].Serial
             })
         }else {
             res.status.json({
