@@ -9,4 +9,7 @@ exports.findOne = (req, res) => {
             data:data
         })
     })
+    .catch((err) => {
+        res.status(500).send(err);
+    })
 }
