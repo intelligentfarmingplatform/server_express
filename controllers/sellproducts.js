@@ -183,3 +183,14 @@
             res.status(500).send(err);
         });
     };
+
+    exports.showproduct = (req,res) => {
+        db.tbl_sellproducts.findAll()
+        .then((data) => {
+            res.status(200).json({
+                statusCode: 200,
+                message: "No Product in Database",
+                data: data
+            })
+        })
+    }
