@@ -18,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
     temp: DataTypes.DOUBLE,
     humi: DataTypes.INTEGER,
     ec: DataTypes.FLOAT,
+    water_level: DataTypes.INTEGER,
     light_int: DataTypes.INTEGER,
     pump_a: DataTypes.STRING,
     pump_b: DataTypes.STRING,
