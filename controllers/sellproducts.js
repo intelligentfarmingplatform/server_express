@@ -189,8 +189,15 @@
         .then((data) => {
             res.status(200).json({
                 statusCode: 200,
-                message: "No Product in Database",
+                message: "Have Product in Database",
                 data: data
+            })
+        })
+        .catch((err)=> {
+            res.status(500).json({
+                statusCode: 400,
+                message: "No Product in Database",
+ 
             })
         })
     }
