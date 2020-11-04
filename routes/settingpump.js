@@ -1,7 +1,9 @@
 const express = require('express')
 const router = express.Router();
 const settingpumpController = require("../controllers/settingpump");
+const { protect } = require("../utils/auth");
 
+router.use(protect);
 // router.post("/", dblistController.dblist);
 router.get("/:id", settingpumpController.findOne);
 // router.get("/status/:id", dblistController.findstatus);

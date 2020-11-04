@@ -1,12 +1,16 @@
 const db = require("../models");
 
-exports.findOne = (req, res) => {
-    db.tbl_dbRealtime.findByPk(req.params.id)
+exports.findAll = (req, res) => {
+    console.log(req.user);
+    db.tbl_dbRealtime.findAll({
+        where:{
+            serial_number : req.user.Serial
+        }
+    })
     .then((data) => {
         res.status(200).json({
             statusCode: 200,
-            message: "Data in Found",
-            data:data
-        })
+            data: data,
+        });
     })
 }

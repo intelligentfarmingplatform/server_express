@@ -14,7 +14,6 @@ const dblistRoute = require("./routes/dblist")
 const dbrealtimeRoute = require("./routes/dbrealtime")
 const settingpumpRoute = require("./routes/settingpump")
 
-
 const port = process.env.PORT || 3001
 
 app.use(express.static(path.join(__dirname, 'img')))
@@ -22,6 +21,7 @@ app.use(cors());
 app.use(fileupload());
 app.use(bodyPasser.json());
 app.use(bodyPasser.urlencoded({extended: true}));
+
 
 app.use('/api/user',userRoute);
 app.use('/api/sellproducts',sellproductsRoute);
@@ -31,8 +31,8 @@ app.use('/api/dblist',dblistRoute);
 app.use('/api/dbrealtime',dbrealtimeRoute);
 app.use('/api/settingpump',settingpumpRoute);
 
-
 db.sequelize.sync()
     .then(() =>
         app.listen(port, () => console.log(`Example app listening at http: //localhost:${port}`))
     )
+

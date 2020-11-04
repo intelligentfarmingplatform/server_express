@@ -1,9 +1,11 @@
 const express = require('express')
 const router = express.Router();
 const dblistController = require("../controllers/dblist");
+const { protect } = require("../utils/auth");
 
+router.use(protect);
 // router.post("/", dblistController.dblist);
-router.get("/:id", dblistController.findOne);
+router.get("/", dblistController.findAll);
 // router.get("/status/:id", dblistController.findstatus);
 // router.delete("/img/:id", dblist.deleteimg);
 // router.post("/", dblist.create);

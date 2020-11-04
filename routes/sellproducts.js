@@ -1,7 +1,9 @@
 const express = require('express')
 const router = express.Router();
 const UserController = require("../controllers/sellproducts");
+const { protect } = require("../utils/auth");
 
+router.use(protect);
 router.get("/", UserController.findAll);
 router.put("/img/:id", UserController.img);
 router.get("/:id", UserController.findOne);

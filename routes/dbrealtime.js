@@ -1,9 +1,11 @@
 const express = require('express')
 const router = express.Router();
 const dbrealtimeController = require("../controllers/dbrealtime");
+const { protect } = require("../utils/auth");
 
+router.use(protect);
 // router.post("/", dbrealtimeController.dbrealtime);
-router.get("/:id", dbrealtimeController.findOne);
+router.get("/", dbrealtimeController.findAll);
 // router.get("/status/:id", dbrealtimeController.findstatus);
 // router.delete("/img/:id", dbrealtime.deleteimg);
 // router.post("/", dbrealtime.create);

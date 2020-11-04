@@ -1,5 +1,6 @@
 const express = require("express");
 const db = require("../models");
+const {hashPassword} = require("../utils/auth");
 
 exports.findAll = (req, res) => {
     db.User.findAll()
@@ -28,12 +29,16 @@ exports.findOne = (req, res) =>{
     });
 };
 
-exports.create = (req, res) =>{
+exports.create = async(req, res) =>{
+    let password = req.body.password
+    password = await hashPassword(password);
+
     db.User.create({
         userName: req.body.userName,
-        password: req.body.password,
+        password: password,
         email: req.body.email,
-        status_level: req.body.status
+        status_level: req.body.status,
+        Serial: req.body.serial
     })
     .then((data ) =>{
         res.status(200).json({
