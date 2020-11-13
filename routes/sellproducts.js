@@ -3,7 +3,7 @@ const router = express.Router();
 const UserController = require("../controllers/sellproducts");
 const { protect } = require("../utils/auth");
 
-router.use("/show" ,UserController.showproduct);
+router.get("/show" ,UserController.showproduct);
 router.put("/img/:id", UserController.img);
 router.use(protect);
 router.get("/", UserController.findAll);

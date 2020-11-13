@@ -56,6 +56,7 @@ exports.protect = async (req, res, next) => {
         })
         .then((data) => {
             req.user = data[0];
+            req.decoded = decoded;
             // console.log(data);
             next();
         })
