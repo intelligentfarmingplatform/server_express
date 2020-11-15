@@ -13,7 +13,7 @@ const loginRoute = require("./routes/login");
 const dblistRoute = require("./routes/dblist");
 const dbrealtimeRoute = require("./routes/dbrealtime");
 const settingpumpRoute = require("./routes/settingpump");
-const customerRoute = require("./routes/customer");
+const customerRoute = require("./routes/customers/customer");
 const {success, error} = require("consola");
 
 const port = process.env.PORT || 3001;

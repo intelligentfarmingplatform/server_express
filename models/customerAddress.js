@@ -2,9 +2,13 @@ module.exports = (sequelize, DataTypes) => {
   const CustomerAddress = sequelize.define(
     "CustomerAddress",
     {
-      addressId: DataTypes.STRING,
-      email: DataTypes.STRING,
-      orderStatus: DataTypes.STRING,
+      customerId: DataTypes.INTEGER,
+      fullName: DataTypes.STRING,
+      streetAddress: DataTypes.STRING,
+      district: DataTypes.STRING,
+      province: DataTypes.STRING,
+      zipCode: DataTypes.STRING,
+      phoneNumber: DataTypes.STRING
     },
     { sequelize, modelName: "CustomerAddress" }
   );

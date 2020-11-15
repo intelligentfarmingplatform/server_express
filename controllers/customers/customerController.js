@@ -1,61 +1,16 @@
-const db = require("../models");
+const db = require("../../models");
 const {
   hashPassword,
   sendTokenResponse,
   matchPassword,
-} = require("../utils/auth");
+} = require("../../utils/auth");
 const {
   customerRegisterValidation,
   customerLoginValidation,
-} = require("../utils/validation");
+  customerChangePasswordValidation,
+} = require("../../utils/validation");
 const moment = require("moment");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
-
-exports.findAll = (req, res) => {
-  db.Customer.findAll()
-    .then((data) => {
-      res.status(200).json({
-        statusCode: 200,
-        message: "Data in Found",
-        data: data,
-      });
-    })
-    .catch((err) => {
-      res.status(500).send(err);
-    });
-};
-exports.findOne = (req, res) => {
-  db.Customer.findByPk(req.params.id)
-    .then((data) => {
-      res.status(200).json({
-        statusCode: 200,
-        message: "Data in Found",
-        data: data,
-      });
-    })
-    .catch((err) => {
-      res.status(500).send(err);
-    });
-};
-
-exports.orderTracking = async (req, res) => {
-  try {
-    let listOrder = await db.CustomerOrderItem.findOrder({
-      where: {
-        customerId: req.decoded.iduser,
-      },
-    });
-    res.json({
-      success: true,
-      data: listOrder,
-    });
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: err.message,
-    });
-  }
-};
 
 exports.login = async (req, res) => {
   const { error } = customerLoginValidation(req.body);
@@ -133,66 +88,44 @@ exports.create = async (req, res) => {
     });
     return res.json({ success: true, message: "Register Successfully !" });
   } catch (err) {
-    res.status(400).send(err);
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
   }
 };
 
-exports.update = (req, res) => {
-  db.Customer.update(
-    {
-      userName: req.body.userName,
-      password: req.body.password,
-      email: req.body.email,
-      status_level: req.body.status,
-    },
-    {
-      where: {
-        id: req.params.id,
+exports.updatePassword = async (req, res) => {
+  const { error } = customerChangePasswordValidation(req.body);
+  if (error)
+    return res
+      .status(400)
+      .json({ success: false, message: error.details[0].message });
+  try {
+    let password = req.body.password;
+    password = await hashPassword(password);
+    const UpdateUser = await db.Customer.update(
+      {
+        password: password,
       },
+      {
+        where: {
+          id: req.decoded.iduser,
+        },
+      }
+    );
+    if (UpdateUser) {
+      res.json({
+        success: true,
+        message: "อัพเดทรหัสผ่านใหม่เรียบร้อยแล้ว",
+      });
     }
-  )
-    .then((data) => {
-      res.status(200).json({
-        statusCode: 201,
-        message: "User Update Successfully",
-        data: data,
-      });
-    })
-    .catch((err) => {
-      res.status(500).send(err);
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
     });
-};
-
-exports.deleteOne = (req, res) => {
-  db.Customer.destroy({
-    where: {
-      id: req.params.id,
-    },
-  })
-    .then((data) => {
-      res.status(200).json({
-        statusCode: 204,
-        message: "User Deleted Successfully",
-        data: data,
-      });
-    })
-    .catch((err) => {
-      res.status(500).send(err);
-    });
-};
-
-exports.deleteAll = (req, res) => {
-  db.Customer.destroy({ where: {} })
-    .then((data) => {
-      res.status(200).json({
-        statusCode: 204,
-        message: "User Deleted All Successfully",
-        data: data,
-      });
-    })
-    .catch((err) => {
-      res.status(500).send(err);
-    });
+  }
 };
 
 exports.estimated = async (req, res) => {

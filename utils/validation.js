@@ -41,6 +41,56 @@ const customerLoginValidation = (data) => {
   return schema.validate(data);
 };
 
+//Customer Change Password Validation
+const customerChangePasswordValidation = (data) => {
+  const schema = Joi.object({
+    password: Joi.string().min(6).required().messages({
+      "string.empty": `รหัสผ่านไม่สามารถเป็นค่าว่างได้`,
+      "string.min": `รหัสผ่านต้องไม่ต่ำกว่า {#limit} ตัวอักษร`,
+      "any.required": `จำเป็นต้องใส่รหัสผ่าน`,
+    }),
+  });
+  return schema.validate(data);
+};
+//Customer Address Validation
+const customerAddressValidation = (data) => {
+  const schema = Joi.object({
+    // id: Joi.number(),
+    // customerId: Joi.number(),
+    fullName: Joi.string().min(3).required().messages({
+      "string.empty": `ชื่อ-นามสกุลไม่สามารถเป็นค่าว่างได้`,
+      "string.min": `ชื่อ-นามสกุลต้องไม่ต่ำกว่า {#limit} ตัวอักษร`,
+      "any.required": `จำเป็นต้องใส่ชื่อ-นามสกุล`,
+    }),
+    district: Joi.string().min(2).required().messages({
+      "string.empty": `อำเภอไม่สามารถเป็นค่าว่างได้`,
+      "string.min": `อำเภอต้องไม่ต่ำกว่า {#limit} ตัวอักษร`,
+      "any.required": `จำเป็นต้องใส่อำเภอ`,
+    }),
+    province: Joi.string().min(3).required().messages({
+      "string.empty": `จังหวัดไม่สามารถเป็นค่าว่างได้`,
+      "string.min": `จังหวัดต้องไม่ต่ำกว่า {#limit} ตัวอักษร`,
+      "any.required": `จำเป็นต้องใส่จังหวัด`,
+    }),
+    zipCode: Joi.string().min(3).required().messages({
+      "string.empty": `รหัสไปษณีย์ไม่สามารถเป็นค่าว่างได้`,
+      "string.min": `รหัสไปษณีย์ต้องไม่ต่ำกว่า {#limit} ตัวอักษร`,
+      "any.required": `จำเป็นต้องใส่รหัสไปษณีย์`,
+    }),
+    streetAddress: Joi.string().min(10).required().messages({
+      "string.empty": `ที่อยู่ไม่สามารถเป็นค่าว่างได้`,
+      "string.min": `ที่อยู่ต้องไม่ต่ำกว่า {#limit} ตัวอักษร`,
+      "any.required": `จำเป็นต้องใส่ที่อยู่`,
+    }),
+    phoneNumber: Joi.string().max(10).required().messages({
+      "string.empty": `เบอร์โทรศัพท์ไม่สามารถเป็นค่าว่างได้`,
+      "string.max": `เบอร์โทรศัพท์ต้องไม่ต่ำกว่า {#limit} ตัวอักษร`,
+      "any.required": `จำเป็นต้องใส่เบอร์โทรศัพท์`,
+    }),
+  });
+  return schema.validate(data);
+};
+
 //backend  Register Validation //
 const RegisterValidation = (data) => {
   const schema = Joi.object({
@@ -106,5 +156,7 @@ const LoginValidation = (data) => {
 };
 module.exports.customerRegisterValidation = customerRegisterValidation;
 module.exports.customerLoginValidation = customerLoginValidation;
+module.exports.customerChangePasswordValidation = customerChangePasswordValidation;
+module.exports.customerAddressValidation = customerAddressValidation;
 module.exports.RegisterValidation = RegisterValidation;
 module.exports.LoginValidation = LoginValidation;
