@@ -7,7 +7,6 @@ module.exports = (sequelize, DataTypes) => {
       email: { type: DataTypes.STRING, allowNull: false, len: [5, 50] },
       status_level: { type: DataTypes.STRING, allowNull: false },
       defaultAddress: { type: DataTypes.STRING, allowNull: true },
-      profiles: { type: DataTypes.STRING, allowNull: true },
     },
     {
       sequelize,
@@ -21,8 +20,16 @@ module.exports = (sequelize, DataTypes) => {
       },
     }
   );
-  Customer.associate = function (models) {
-    // associations can be defined here
+  Customer.associate = (models) => {
+    Customer.hasMany(models.CustomerAddress, {
+      onDelete: "cascade",
+    });
+    Customer.hasMany(models.CustomerOrderItem, {
+      onDelete: "cascade",
+    });
+    Customer.hasOne(models.CustomerProfile, {
+      onDelete: "cascade",
+    });
   };
   return Customer;
 };

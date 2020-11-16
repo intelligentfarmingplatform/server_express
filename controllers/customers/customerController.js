@@ -37,7 +37,8 @@ exports.login = async (req, res) => {
 
 exports.me = async (req, res) => {
   try {
-    let foundUser = await db.Customer.scope('withoutPassword').findAll({
+    let foundUser = await db.Customer.scope("withoutPassword").findAll({
+      include: [db.CustomerProfile, db.CustomerOrderItem],
       where: { id: req.decoded.iduser },
     });
     //console.log("found", foundUser);

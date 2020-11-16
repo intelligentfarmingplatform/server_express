@@ -22,9 +22,6 @@ const customerRegisterValidation = (data) => {
     defaultAddress: Joi.string().max(8).messages({
       "string.max": `มีข้อผิดพลาด ที่อยู่เกิน {#limit} ตัวอักษร`,
     }),
-    profile: Joi.string().max(300).messages({
-      "string.max": `มีข้อผิดพลาด โปรไฟล์เกิน {#limit} ตัวอักษร`,
-    }),
   });
   return schema.validate(data);
 };

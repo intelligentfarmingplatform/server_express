@@ -3,7 +3,6 @@ module.exports = (sequelize, DataTypes) => {
     "CustomerOrderItem",
     {
       cartItem: DataTypes.JSON,
-      customerId: DataTypes.STRING,
       quantity: DataTypes.INTEGER,
       totalPrice: DataTypes.INTEGER,
       orderStatus: DataTypes.STRING,
@@ -11,6 +10,12 @@ module.exports = (sequelize, DataTypes) => {
     },
     { sequelize, modelName: "CustomerOrderItem" }
   );
+  CustomerOrderItem.associate = (models) => {
+    CustomerOrderItem.belongsTo(models.Customer, {
+      foreighKey: {
+        allowNull: false,
+      },
+    });
+  };
   return CustomerOrderItem;
 };
- 
