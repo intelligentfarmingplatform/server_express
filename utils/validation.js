@@ -19,6 +19,12 @@ const customerRegisterValidation = (data) => {
       "string.min": `รหัสผ่านต้องไม่ต่ำกว่า {#limit} ตัวอักษร`,
       "any.required": `จำเป็นต้องใส่รหัสผ่าน`,
     }),
+    defaultAddress: Joi.string().max(8).messages({
+      "string.max": `มีข้อผิดพลาด ที่อยู่เกิน {#limit} ตัวอักษร`,
+    }),
+    profile: Joi.string().max(300).messages({
+      "string.max": `มีข้อผิดพลาด โปรไฟล์เกิน {#limit} ตัวอักษร`,
+    }),
   });
   return schema.validate(data);
 };

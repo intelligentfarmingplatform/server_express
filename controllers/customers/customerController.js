@@ -37,7 +37,7 @@ exports.login = async (req, res) => {
 
 exports.me = async (req, res) => {
   try {
-    let foundUser = await db.Customer.findOne({
+    let foundUser = await db.Customer.scope('withoutPassword').findAll({
       where: { id: req.decoded.iduser },
     });
     //console.log("found", foundUser);
@@ -45,6 +45,26 @@ exports.me = async (req, res) => {
       res.json({
         success: true,
         users: foundUser,
+      });
+    }
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+exports.profile = async (req, res) => {
+  try {
+    let foundUser = await db.Customer.findOne({
+      where: { id: req.decoded.iduser },
+    });
+    //console.log("found", foundUser);
+    if (foundUser) {
+      res.json({
+        success: true,
+        profile: foundUser.profiles,
       });
     }
   } catch (err) {
@@ -80,7 +100,7 @@ exports.create = async (req, res) => {
     let password = req.body.password;
     password = await hashPassword(password);
 
-    db.Customer.create({
+    await db.Customer.create({
       userName: req.body.userName,
       password: password,
       email: req.body.email,
