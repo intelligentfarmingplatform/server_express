@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
       password: { type: DataTypes.STRING, allowNull: false, len: [8, 20] },
       email: { type: DataTypes.STRING, allowNull: false, len: [5, 50] },
       status_level: { type: DataTypes.STRING, allowNull: false },
+      defaultAddress: { type: DataTypes.STRING, allowNull: false },
     },
     { sequelize, modelName: "Customer" }
   );

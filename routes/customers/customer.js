@@ -4,7 +4,7 @@ const OrderController = require("../../controllers/customers/orderController");
 const AddressController = require("../../controllers/customers/addressController");
 const { protect } = require("../../utils/auth");
 
-router.get("/shipment", CustomerController.estimated);
+router.post("/shipment", CustomerController.estimated);
 router.post("/", CustomerController.create);
 router.post("/login", CustomerController.login);
 
@@ -15,6 +15,7 @@ router.use(protect);
 router.get("/address", AddressController.address);
 router.post("/address", AddressController.createAddress);
 router.put("/address/:id", AddressController.editAddress);
+router.put("/address/set/:set/default", AddressController.setDefault);
 router.delete("/address/:id", AddressController.deleteAddress);
 //customer section
 router.get("/orders", OrderController.orderTracking);

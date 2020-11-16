@@ -89,6 +89,30 @@ exports.editAddress = async (req, res) => {
   }
 };
 
+exports.setDefault = async (req, res) => {
+  try {
+    const foundCustomer = await db.Customer.update(
+      {
+        defaultAddress: parseInt(req.params.set),
+      },
+      {
+        where: {
+          id: req.decoded.iduser,
+        },
+      }
+    );
+    res.json({
+      success: true,
+      message: "ตั้งค่าที่อยู่เริ่มต้นสำเร็จ",
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
 exports.deleteAddress = async (req, res) => {
   try {
     let deleteAddress = await db.CustomerAddress.destroy({
@@ -96,7 +120,7 @@ exports.deleteAddress = async (req, res) => {
         id: req.params.id,
       },
     });
-    
+
     if (deleteAddress == 0) {
       return res.status(400).json({
         success: false,
