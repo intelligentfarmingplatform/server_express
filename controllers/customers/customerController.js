@@ -8,6 +8,7 @@ const {
   customerRegisterValidation,
   customerLoginValidation,
   customerChangePasswordValidation,
+  customerProfileValidation,
 } = require("../../utils/validation");
 const moment = require("moment");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
@@ -43,8 +44,35 @@ exports.me = async (req, res) => {
     });
     //console.log("found", foundUser);
     if (foundUser) {
+      let findProfile = await db.CustomerProfile.findOne({
+        where: {
+          CustomerId: req.decoded.iduser,
+        },
+      });
+      if (!findProfile) {
+        let createNewProfile = await db.CustomerProfile.create({
+          displayName: foundUser.userName,
+          fullName: null,
+          phoneNumber: null,
+          sex: null,
+          CustomerId: req.decoded.iduser,
+        });
+        console.log("from create new profile", createNewProfile);
+        if (createNewProfile) {
+          let putProfileId = await db.Customer.update(
+            {
+              profileId: createNewProfile.id,
+            },
+            {
+              where: { id: req.decoded.iduser },
+            }
+          );
+        }
+      }
+
       res.json({
         success: true,
+        message: "Successfully login",
         users: foundUser,
       });
     }
@@ -57,21 +85,43 @@ exports.me = async (req, res) => {
 };
 
 exports.editProfile = async (req, res) => {
+  const { error } = customerProfileValidation(req.body);
+  if (error)
+    return res
+      .status(400)
+      .json({ success: false, message: error.details[0].message });
   try {
-    let foundUser = await db.CustomerProfile.findOne({
-      where: { id: req.decoded.iduser },
+    let foundUser = await db.Customer.findOne({
+      where: {
+        id: req.decoded.iduser,
+      },
     });
-    //console.log("found", foundUser);
-    if (!foundUser) {
-      await db.CustomerProfile.create({
-        displayName: req.body.displayName,
-        fullName: req.body.displayName,
-        email: req.body.email,
-        phoneNumber: req.body.phoneNumber,
-        sex: req.body.sex,
-        CustomerId: req.decoded.iduser,
+    if (foundUser) {
+      let foundProfile = await db.CustomerProfile.findOne({
+        where: { id: foundUser.profileId },
       });
+      if (foundProfile) {
+        await db.CustomerProfile.update(
+          {
+            displayName: req.body.displayName,
+            fullName: req.body.fullName,
+            phoneNumber: req.body.phoneNumber,
+            sex: req.body.sex,
+            CustomerId: req.decoded.iduser,
+          },
+          {
+            where: {
+              id: foundUser.profileId,
+            },
+          }
+        );
+      }
     }
+
+    return res.json({
+      success: true,
+      message: "แก้ไขโปรไฟล์สำเร็จ",
+    });
   } catch (err) {
     res.status(500).json({
       success: false,
@@ -105,7 +155,7 @@ exports.create = async (req, res) => {
     let password = req.body.password;
     password = await hashPassword(password);
 
-    await db.Customer.create({
+    const CreatedCustomer = await db.Customer.create({
       userName: req.body.userName,
       password: password,
       email: req.body.email,

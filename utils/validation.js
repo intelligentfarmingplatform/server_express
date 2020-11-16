@@ -28,28 +28,23 @@ const customerRegisterValidation = (data) => {
 //Customer Profile Validation
 const customerProfileValidation = (data) => {
   const schema = Joi.object({
-    displayName: Joi.string().min(6).messages({
-      // "string.empty": `Diaplay Name ไม่สามารถเป็นค่าว่างได้`,
+    displayName: Joi.string().min(6).required().messages({
+      "string.empty": `Diaplay Name ไม่สามารถเป็นค่าว่างได้`,
       "string.min": `Diaplay Name ต้องไม่ต่ำกว่า {#limit} ตัวอักษร`,
     }),
-    fullName: Joi.string().min(6).messages({
-      // "string.empty": `ชื่อ-นามสกุล ไม่สามารถเป็นค่าว่างได้`,
+    fullName: Joi.string().min(6).required().messages({
+      "string.empty": `ชื่อ-นามสกุล ไม่สามารถเป็นค่าว่างได้`,
       "string.min": `ชื่อ-นามสกุล ต้องไม่ต่ำกว่า {#limit} ตัวอักษร`,
     }),
-    email: Joi.string().min(6).email().messages({
-      "string.email": `รูปแบบ E-mail ไม่ถูกต้อง`,
-      // "string.empty": `E-mail ไม่สามารถเป็นค่าว่างได้`,
-      "string.min": `E-mail ต้องไม่ต่ำกว่า {#limit} ตัวอักษร`,
-    }),
-    phoneNumber: Joi.string().max(10).messages({
-      // "string.empty": `เบอร์โทรศัพท์ไม่สามารถเป็นค่าว่างได้`,
+    phoneNumber: Joi.string().max(10).required().messages({
+      "string.empty": `เบอร์โทรศัพท์ไม่สามารถเป็นค่าว่างได้`,
       "string.max": `เบอร์โทรศัพท์ต้องไม่ต่ำกว่า {#limit} ตัวอักษร`,
       "any.required": `จำเป็นต้องใส่เบอร์โทรศัพท์`,
     }),
     sex: Joi.string().max(10).required().messages({
-      // "string.empty": `โปรดระบุเพศ`,
+      "string.empty": `โปรดระบุเพศ`,
       "string.max": `พบข้อผิดพลาด ค่าของgenderต้องไม่เกิน{#limit} ตัวอักษร`,
-      // "any.required": `จำเป็นต้องใส่`,
+      "any.required": `จำเป็นต้องใส่`,
     }),
   });
   return schema.validate(data);
@@ -187,7 +182,7 @@ const LoginValidation = (data) => {
   return schema.validate(data);
 };
 module.exports.customerRegisterValidation = customerRegisterValidation;
-module.exports.customerProfileValidation= customerProfileValidation;
+module.exports.customerProfileValidation = customerProfileValidation;
 module.exports.customerLoginValidation = customerLoginValidation;
 module.exports.customerChangePasswordValidation = customerChangePasswordValidation;
 module.exports.customerAddressValidation = customerAddressValidation;
