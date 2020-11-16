@@ -39,7 +39,7 @@ exports.login = async (req, res) => {
 exports.me = async (req, res) => {
   try {
     let foundUser = await db.Customer.scope("withoutPassword").findOne({
-      include: [db.CustomerProfile, db.CustomerOrderItem],
+      include: [db.CustomerProfile, db.CustomerOrderItem,db.CustomerAddress],
       where: { id: req.decoded.iduser },
     });
     //console.log("found", foundUser);
@@ -61,7 +61,7 @@ exports.me = async (req, res) => {
         if (createNewProfile) {
           let putProfileId = await db.Customer.update(
             {
-              profileId: createNewProfile.id,
+              CustomerProfileId: createNewProfile.id,
             },
             {
               where: { id: req.decoded.iduser },
@@ -98,7 +98,7 @@ exports.editProfile = async (req, res) => {
     });
     if (foundUser) {
       let foundProfile = await db.CustomerProfile.findOne({
-        where: { id: foundUser.profileId },
+        where: { id: foundUser.CustomerProfileId },
       });
       if (foundProfile) {
         await db.CustomerProfile.update(
@@ -111,7 +111,7 @@ exports.editProfile = async (req, res) => {
           },
           {
             where: {
-              id: foundUser.profileId,
+              id: foundUser.CustomerProfileId,
             },
           }
         );

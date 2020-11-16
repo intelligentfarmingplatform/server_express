@@ -2,10 +2,15 @@ module.exports = (sequelize, DataTypes) => {
   const Customer = sequelize.define(
     "Customer",
     {
+      id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true,
+      },
       userName: { type: DataTypes.STRING, allowNull: false, len: [5, 20] },
       password: { type: DataTypes.STRING, allowNull: false, len: [8, 20] },
       email: { type: DataTypes.STRING, allowNull: false, len: [5, 50] },
-      profileId: DataTypes.STRING,
       status_level: { type: DataTypes.STRING, allowNull: false },
       defaultAddress: { type: DataTypes.STRING, allowNull: true },
     },
@@ -22,8 +27,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   Customer.associate = (models) => {
-    Customer.hasOne(models.CustomerProfile, {
-      onDelete: "cascade",
+    Customer.belongsTo(models.CustomerProfile, {
+      foreighKey: {
+        allowNull: false,
+      },
     });
     Customer.hasMany(models.CustomerAddress, {
       onDelete: "cascade",
