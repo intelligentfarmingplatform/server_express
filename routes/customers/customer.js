@@ -18,7 +18,7 @@ router.put("/address/:id", AddressController.editAddress);
 router.put("/address/set/:set/default", AddressController.setDefault);
 router.delete("/address/:id", AddressController.deleteAddress);
 //customer section
-router.get("/get/profile", CustomerController.profile);
+router.get("/edit/profile", CustomerController.editProfile);
 router.get("/orders", OrderController.orderTracking);
 router.post("/payment", CustomerController.payment);
 router.put("/", CustomerController.updatePassword);
