@@ -3,7 +3,7 @@ const { customerAddressValidation } = require("../../utils/validation");
 exports.address = async (req, res) => {
   try {
     let foundAddress = await db.CustomerAddress.findAll({
-      where: { customerId: req.decoded.iduser },
+      where: { CustomerId: req.decoded.iduser },
     });
     if (foundAddress.length == 0) {
       return res.status(204).json({
@@ -32,7 +32,7 @@ exports.createAddress = async (req, res) => {
   }
   try {
     const CreateAddress = await db.CustomerAddress.create({
-      customerId: req.decoded.iduser,
+      CustomerId: req.decoded.iduser,
       fullName: req.body.fullName,
       streetAddress: req.body.streetAddress,
       district: req.body.district,
@@ -63,7 +63,7 @@ exports.editAddress = async (req, res) => {
   try {
     await db.CustomerAddress.update(
       {
-        customerId: req.decoded.iduser,
+        CustomerId: req.decoded.iduser,
         fullName: req.body.fullName,
         streetAddress: req.body.streetAddress,
         district: req.body.district,

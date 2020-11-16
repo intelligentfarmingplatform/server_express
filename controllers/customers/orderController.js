@@ -4,7 +4,7 @@ exports.orderTracking = async (req, res) => {
   try {
     let listOrder = await db.CustomerOrderItem.findAll({
       where: {
-        customerid: req.decoded.iduser,
+        Customerid: req.decoded.iduser,
       },
     });
     if (listOrder.length == 0) {

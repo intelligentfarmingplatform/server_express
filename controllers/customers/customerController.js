@@ -206,7 +206,7 @@ exports.payment = (req, res) => {
         cartItem: cart,
         quantity: quantity,
         totalPrice: req.body.totalPrice,
-        customerId: req.decoded.iduser,
+        CustomerId: req.decoded.iduser,
         estimatedDelivery: req.body.estimatedDelivery,
         orderStatus: "Order",
       });
