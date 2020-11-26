@@ -48,6 +48,32 @@ exports.changestatus = (req, res) => {
         })
 }
 
+exports.ShowOrder = async (req, res) => {
+    // console.log(req.user);
+    try {
+      let listOrder = await db.CustomerOrderItem.findAll({
+        where:{
+            cartItem : [{nameseller : "thitiphong"}]
+        }
+      });
+      if (listOrder.length == 0) {
+        return res.status(204).json({
+          success: false,
+          message: "ยังไม่มีการสั่งซื้อ",
+        });
+      }
+      res.json({
+        success: true,
+        order: listOrder,
+      });
+    } catch (err) {
+      res.status(500).json({
+        success: false,
+        message: err.message,
+      });
+    }
+  };
+
 // exports.findstatus = (req, res) => {
 //     const staus = req.params.id;
 //     const sql =  `select * form tbl_order where ${staus}`;

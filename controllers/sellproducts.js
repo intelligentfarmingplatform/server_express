@@ -3,10 +3,11 @@
     const path = require('path');
     const db = require("../models");
 
-    exports.findAll = (req, res) => {
-        db.tbl_sellproducts.findAll({
+    exports.findAll = async (req, res) => {
+        console.log(req.user.tbl_userdetail.name);
+        await db.tbl_sellproducts.findAll({
             where:{
-                serial_number: req.user.Serial 
+                nameseller: req.user.tbl_userdetail.name
             }
         })
         .then((data) => {
@@ -37,13 +38,14 @@
 
     exports.create = (req, res) =>{
         db.tbl_sellproducts.create({
-            serial_number: req.body.sell_id,
+            nameseller: req.body.nameseller,
+            serial_number: req.body.serial,
             productname: req.body.productname,
             productprice: req.body.productnumber,
             productnumber: req.body.productnumber,
             productdetail: req.body.productdetail,
             producttab: req.body.producttab,
-            productimg: 'xxx.jpg'
+            productimg: 'xxx.jpg',
         })
         .then((data ) =>{
             res.status(200).json({
@@ -60,7 +62,8 @@
     exports.update = (req, res ) => {
         db.tbl_sellproducts.update  (
             {
-                serial_number: req.body.sell_id,
+                nameseller: req.body.nameseller,
+                serial_number: req.body.serial,
                 productname: req.body.productname,
                 productprice: req.body.productprice,
                 productnumber: req.body.productnumber,

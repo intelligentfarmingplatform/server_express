@@ -5,6 +5,7 @@ const {
   matchPassword,
 } = require("../utils/auth");
 const { RegisterValidation, LoginValidation } = require("../utils/validation");
+
 exports.login = async (req, res) => {
   let { username, password } = req.body;
   const { error } = LoginValidation({ username, password });
@@ -14,7 +15,7 @@ exports.login = async (req, res) => {
       .json({ success: false, message: error.details[0].message });
   //เช็คว่ามี user รึเปล่า
   const userExist = await db.User.findOne({
-    where: { userName: username },
+    where: { userName: username }, 
   });
   if (!userExist)
     return res
@@ -53,7 +54,7 @@ exports.sing = async (req, res) => {
       .status(400)
       .json({ success: false, message: "ไม่มี Serial นี้ในระบบ" });
   }
-  const serialCheck = await db.User.findOne({
+  const serialCheck = await db.tbl_userserial.findOne({
     where: { Serial: serialExist.serial },
   });
   if (serialCheck) {
@@ -67,9 +68,20 @@ exports.sing = async (req, res) => {
     const CreateUser = await db.User.create({
       userName: username,
       password: password,
-      status_level: "members",
-      Serial: serialExist.serial,
     });
+    const CreateDetailUser = await db.tbl_userdetail.create({
+      name: '',
+      email:'',
+      address:'',
+      detail:'',
+      status_level:'members',
+      UserId: CreateUser.id
+    });
+    const AddSerialUser = await db.tbl_userserial.create({
+      name:'',
+      serial: serial,
+      UserId: CreateUser.id
+    })
     await sendTokenResponse(CreateUser.id, 200, res);
     //return res.json({ success: true, message: "สมัครสมาชิกสำเร็จ" });
   } catch (err) {

@@ -49,32 +49,16 @@ exports.protect = async (req, res, next) => {
 
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        db.User.findAll({
-            where:{
-                id: decoded.iduser,
-            }
-        })
+      
+     await db.User.scope("withoutPassword").findOne({
+        include: [db.tbl_userdetail,db.tbl_userserial],
+        where: {id: decoded.iduser },
+    })    
         .then((data) => {
-            req.user = data[0];
+            req.user = data;
             req.decoded = decoded;
-            // console.log(data);
             next();
         })
-
-
-    // //   let userSocial = await query(
-    // //     "SELECT * FROM `member_social` WHERE `uniqid` = ?",
-    // //     [decoded.uniqid]
-    // //   );
-
-    // //   let userJsonSocial = Object.values(
-    // //     JSON.parse(JSON.stringify(userSocial))
-    // //   )[0];
-
-    // //   if (userJsonSocial != undefined) {
-    // //     req.user = userJsonSocial;
-    // //     next();
-    // //   }
     } catch (error) {
         return res.status(500).json({
             statusCode: 401,

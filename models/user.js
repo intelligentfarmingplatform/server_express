@@ -3,12 +3,29 @@ module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     userName: DataTypes.STRING,
     password: DataTypes.STRING,
-    email: DataTypes.STRING,
-    status_level: DataTypes.STRING,
-    Serial: DataTypes.STRING
-  }, {});
-  User.associate = function(models) {
-    // associations can be defined here
+  }, {
+    sequelize,
+    modelName: "User",
+    scopes: {
+      withoutPassword: {
+          attributes: {
+              exclude: ["password"],
+          },
+      },
+  },
+  });
+  User.associate = function (models) {
+    User.hasOne(models.tbl_userdetail, {
+      onDelete: 'cascade',
+      
+    });
+    models.tbl_userdetail.belongsTo(User, {
+    });
+    User.hasMany(models.tbl_userserial, {
+      onDelete: 'cascade',
+    });
+    models.tbl_userserial.belongsTo(User, {
+    });
   };
   return User;
 };

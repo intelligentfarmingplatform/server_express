@@ -5,7 +5,7 @@ const { protect } = require("../utils/auth");
 
 router.use(protect);
 router.get("/", UserController.findAll);
-router.get("/:id", UserController.findOne);
+router.get("/userone", UserController.userone);
 
 router.post("/", UserController.create);
 

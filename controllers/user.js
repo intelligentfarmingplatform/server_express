@@ -15,18 +15,20 @@ exports.findAll = (req, res) => {
         res.status(500).send(err);
     });
 };
-exports.findOne = (req, res) =>{
-    db.User.findByPk(req.params.id)
-    .then((data) => {
-        res.status(200).json({
-            statusCode: 200,
-            message: "Data in Found",
-            data: data,
+exports.userone = async (req, res) =>{
+        await db.User.scope("withoutPassword").findOne({
+            include: [db.tbl_userdetail,db.tbl_userserial],
+            where: {id: req.user.id },
+        })
+        .then((data) => {
+            res.status(200).json({
+                statusCode: 200,
+                data: data
+            })
+        })
+        .catch((err) => {
+            res.status(500).send(err);
         });
-    })
-    .catch((err) => {
-        res.status(500).send(err);
-    });
 };
 
 exports.create = async(req, res) =>{

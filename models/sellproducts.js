@@ -14,14 +14,14 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   sellproducts.init({
+    nameseller: DataTypes.STRING,
     serial_number: DataTypes.STRING,
-    productimg: DataTypes.BLOB,
     productname: DataTypes.STRING,
     productdetail: DataTypes.TEXT,
     productprice: DataTypes.INTEGER,
     productnumber: DataTypes.INTEGER,
     producttab: DataTypes.STRING,
-    nameseller: DataTypes.STRING
+    productimg: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'tbl_sellproducts',

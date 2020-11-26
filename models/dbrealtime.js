@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   dbrealtime.init({
-    serial_number: DataTypes.INTEGER,
+    serial_number: DataTypes.STRING,
     temp: DataTypes.DOUBLE,
     humi: DataTypes.INTEGER,
     ec: DataTypes.FLOAT,
