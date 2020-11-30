@@ -2,20 +2,18 @@ module.exports = (sequelize, DataTypes) => {
   const CustomerOrderItem = sequelize.define(
     "CustomerOrderItem",
     {
-      cartItem: DataTypes.JSON,
+      cartItem: DataTypes.STRING,
       quantity: DataTypes.INTEGER,
-      totalPrice: DataTypes.INTEGER,
-      orderStatus: DataTypes.STRING,
-      estimatedDelivery: DataTypes.STRING,
+      price: DataTypes.INTEGER,
     },
     { sequelize, modelName: "CustomerOrderItem" }
   );
   CustomerOrderItem.associate = (models) => {
-    CustomerOrderItem.belongsTo(models.Customer, {
+    CustomerOrderItem.belongsTo(models.CustomerOrder, {
       foreighKey: {
-        allowNull: false,
+          allowNull: false,
       },
-    });
+  });
   };
   return CustomerOrderItem;
 };

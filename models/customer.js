@@ -27,15 +27,13 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   Customer.associate = (models) => {
-    Customer.belongsTo(models.CustomerProfile, {
-      foreighKey: {
-        allowNull: false,
-      },
+    Customer.hasOne(models.CustomerProfile, {
+      onDelete: "cascade",
     });
     Customer.hasMany(models.CustomerAddress, {
       onDelete: "cascade",
     });
-    Customer.hasMany(models.CustomerOrderItem, {
+    Customer.hasMany(models.CustomerOrder, {
       onDelete: "cascade",
     });
   };

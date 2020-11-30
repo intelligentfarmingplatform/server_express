@@ -91,7 +91,7 @@
 
     exports.deleteimg = async(req, res) => {
         const file = req.params.id ;
-        fs.unlink(`${process.env.FILE_UPLOAD_PATH}/${file}` , async (err) => {
+        fs.unlink(`${process.env.FILE_UPLOAD_PATH}/product/${file}` , async (err) => {
             if(err){
                 res.status(400).json({
                     statusCode: 400,
@@ -122,7 +122,7 @@
             path.parse(file.name).ext
         }`;
         console.log(file);
-        file.mv(`${process.env.FILE_UPLOAD_PATH}/${file.name}`, async (err) => {
+        file.mv(`${process.env.FILE_UPLOAD_PATH}/product/${file.name}`, async (err) => {
             if(err){
                 res.status(400).json({
                     statusCode: 400,

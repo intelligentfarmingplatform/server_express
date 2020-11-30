@@ -12,16 +12,20 @@ module.exports = (sequelize, DataTypes) => {
       fullName: DataTypes.STRING,
       phoneNumber: DataTypes.STRING,
       sex: DataTypes.INTEGER,
-      CustomerId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        unique: true,
-      },
+      // CustomerId: {
+      //   type: DataTypes.INTEGER,
+      //   allowNull: false,
+      //   unique: true,
+      // },
     },
     { sequelize, modelName: "CustomerProfile" }
   );
   CustomerProfile.associate = (models) => {
-    
+    CustomerProfile.belongsTo(models.Customer, {
+      foreighKey: {
+        allowNull: false,
+      },
+    });
   };
   return CustomerProfile;
 };

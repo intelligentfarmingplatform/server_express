@@ -1,8 +1,7 @@
 const db = require("../models");
 
 exports.findAll = (req, res) => {
-    console.log(req.user);
-    db.tbl_dbRealtime.findAll({
+    db.tbl_dbRealtime.findOne({
         where:{
             serial_number : req.user.Serial
         }

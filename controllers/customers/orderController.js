@@ -2,10 +2,9 @@ const db = require("../../models");
 
 exports.orderTracking = async (req, res) => {
   try {
-    let listOrder = await db.CustomerOrderItem.findAll({
-      where: {
-        Customerid: req.decoded.iduser,
-      },
+    let listOrder = await db.CustomerOrder.findAll({
+      include: [ db.CustomerOrderItem,db.CustomerDelivery,db.CustomerTransaction],
+      where: { CustomerId: req.decoded.iduser },
     });
     if (listOrder.length == 0) {
       return res.status(204).json({

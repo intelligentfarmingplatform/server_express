@@ -25,7 +25,8 @@
     "mysql2": "^2.2.5",
     "save": "^2.4.0",
     "sequelize": "^6.3.5",
-    "stripe": "^8.120.0"
+    "stripe": "^8.120.0",
+    "uuidv4": "^6.2.5"
   },
   "devDependencies": {
     "faker": "^5.1.0",

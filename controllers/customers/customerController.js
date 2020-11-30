@@ -10,6 +10,7 @@ const {
   customerChangePasswordValidation,
   customerProfileValidation,
 } = require("../../utils/validation");
+const { uuid } = require('uuidv4');
 const moment = require("moment");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
@@ -39,7 +40,7 @@ exports.login = async (req, res) => {
 exports.me = async (req, res) => {
   try {
     let foundUser = await db.Customer.scope("withoutPassword").findOne({
-      include: [db.CustomerProfile, db.CustomerOrderItem,db.CustomerAddress],
+      include: [db.CustomerProfile, db.CustomerOrder, db.CustomerAddress],
       where: { id: req.decoded.iduser },
     });
     //console.log("found", foundUser);
@@ -57,17 +58,6 @@ exports.me = async (req, res) => {
           sex: null,
           CustomerId: req.decoded.iduser,
         });
-        console.log("from create new profile", createNewProfile);
-        if (createNewProfile) {
-          let putProfileId = await db.Customer.update(
-            {
-              CustomerProfileId: createNewProfile.id,
-            },
-            {
-              where: { id: req.decoded.iduser },
-            }
-          );
-        }
       }
 
       res.json({
@@ -234,10 +224,16 @@ exports.estimated = async (req, res) => {
 };
 
 exports.payment = (req, res) => {
+  if (req.body.token.error) {
+    return res.status(500).json({
+      success: false,
+      message: 'ไม่พบข้อมูลบัตรเครดิต กรุณาทำรายการใหม่อีกครั้ง',
+    });
+  }
   let totalPrice = Math.round(req.body.totalPrice * 100);
   stripe.customers
     .create({
-      email: req.decoded.email,
+      email: req.body.email,
     })
     .then((customer) => {
       return stripe.customers.createSource(customer.id, {
@@ -250,26 +246,44 @@ exports.payment = (req, res) => {
         currency: "thb",
         customer: source.customer,
       });
-    })
-    .then(async (charge) => {
+    }).then(async (charge) => {
+      //console.log('from charge',charge)
+      const order = await db.CustomerOrder.create({
+        totalQuantity: parseInt(req.body.totalQuantity),
+        totalPrice: parseInt(req.body.totalPrice),
+        deliveryAddress: parseInt(req.body.deliveryAddress),
+        CustomerId: req.decoded.iduser
+      })
+      const orderNo = await db.CustomerTransaction.create({
+        paymentToken: charge.id,
+        orderNo: 'IFP' + '_' + uuid().toString().substring(0, 8),
+        CustomerOrderId: order.id
+      })
+      console.log(order)
       let cart = req.body.cart;
-      cart.map((product) => {
+      cart.forEach((product) => {
         quantity = parseInt(product.quantity);
-      });
-      let order = db.CustomerOrderItem.create({
-        cartItem: cart,
-        quantity: quantity,
-        totalPrice: req.body.totalPrice,
-        CustomerId: req.decoded.iduser,
+        cartitem = product.id;
+        price = parseInt(product.productprice);
+        db.CustomerOrderItem.create({
+          cartItem: cartitem,
+          quantity: quantity,
+          price: price,
+          CustomerOrderId: order.id,
+        });
+      })
+      let delivery = db.CustomerDelivery.create({
+        deliveryProvider: req.body.deliveryProvider,
         estimatedDelivery: req.body.estimatedDelivery,
         orderStatus: "Order",
+        CustomerOrderId: order.id
       });
 
-      order.owner = req.decoded.iduser;
-      order.estimatedDelivery = req.body.estimatedDelivery;
-
+    })
+    .then(async (charge) => {
+      //order.owner = req.decoded.iduser;
+      //order.estimatedDelivery = req.body.estimatedDelivery;
       // await order.save();
-
       res.json({
         success: true,
         message: "Successfully made a payment",

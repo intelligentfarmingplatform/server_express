@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
   );
   CustomerAddress.associate = (models) => {
     CustomerAddress.belongsTo(models.Customer, {
-      foreighKey: {
+      foreignKey: {
         allowNull: false,
       },
     });
