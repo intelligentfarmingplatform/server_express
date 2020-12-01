@@ -14,10 +14,10 @@
     "dialect": "mysql"
   },
   "production": {
-    "username": "maeteeps_fsync",
-    "password": "26042532",
-    "database": "maeteeps_fsync",
-    "host": "ichigozcloud.tk",
+    "username": "WOOkix78Sf",
+    "password": "F07ROzb8xW",
+    "database": "WOOkix78Sf",
+    "host": "remotemysql.com",
     "dialect": "mysql"
   }
 }
