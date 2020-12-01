@@ -1,23 +1,23 @@
 {
   "development": {
-    "username": "WOOkix78Sf",
-    "password": "F07ROzb8xW",
-    "database": "WOOkix78Sf",
-    "host": "remotemysql.com",
+    "username": "root",
+    "password": "itcmtc2020",
+    "database": "ifp_database",
+    "host": "49.229.108.147",
     "dialect": "mysql"
   },
   "test": {
     "username": "root",
-    "password": null,
-    "database": "database_test",
-    "host": "127.0.0.1", 
+    "password": "itcmtc2020",
+    "database": "ifp_database",
+    "host": "49.229.108.147",
     "dialect": "mysql"
   },
   "production": {
-    "username": "WOOkix78Sf",
-    "password": "F07ROzb8xW",
-    "database": "WOOkix78Sf",
-    "host": "remotemysql.com",
+    "username": "root",
+    "password": "itcmtc2020",
+    "database": "ifp_database",
+    "host": "49.229.108.147",
     "dialect": "mysql"
   }
 }
