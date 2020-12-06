@@ -1,9 +1,10 @@
 const db = require("../models");
 
 exports.findAll = (req, res) => {
+    let{ serial } = req.body
     db.tbl_dbRealtime.findOne({
         where:{
-            serial_number : req.user.Serial
+            serial_number : serial
         }
     })
     .then((data) => {
@@ -11,5 +12,7 @@ exports.findAll = (req, res) => {
             statusCode: 200,
             data: data,
         });
+    }).catch((err) => {
+        res.status(500).send(err);
     })
 }

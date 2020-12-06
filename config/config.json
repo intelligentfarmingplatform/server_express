@@ -1,9 +1,9 @@
 {
   "development": {
-    "username": "root",
-    "password": "itcmtc2020",
-    "database": "ifp_database",
-    "host": "49.229.108.147",
+    "username": "WOOkix78Sf",
+    "password": "F07ROzb8xW",
+    "database": "WOOkix78Sf",
+    "host": "remotemysql.com",
     "dialect": "mysql"
   },
   "test": {

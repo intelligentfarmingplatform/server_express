@@ -1,9 +1,10 @@
 const db = require("../models");
 
 exports.findAll = (req, res) => {
+    let{ serial } = req.body
     db.tbl_dbList.findAll({
         where:{
-            serial_number: req.user.Serial
+            serial_number: serial
         }
     })
     .then((data) => {
