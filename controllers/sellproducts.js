@@ -44,7 +44,7 @@
             productprice: req.body.productnumber,
             productnumber: req.body.productnumber,
             productdetail: req.body.productdetail,
-            producttab: req.body.producttab,
+            productstatus: req.body.productstatus,
             productimg: 'xxx.jpg',
         })
         .then((data ) =>{
@@ -68,7 +68,7 @@
                 productprice: req.body.productprice,
                 productnumber: req.body.productnumber,
                 productdetail: req.body.productdetail,
-                producttab: req.body.producttab
+                productstatus: req.body.productstatus
         },
         {
             where:{
