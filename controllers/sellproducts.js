@@ -4,10 +4,14 @@
     const db = require("../models");
 
     exports.findAll = async (req, res) => {
-        console.log(req.user.tbl_userdetail.name);
+        let findSeller = await db.tbl_userdetail.findOne({
+            where: {
+                UserId: req.decoded.iduser
+            }
+           })
         await db.tbl_sellproducts.findAll({
             where:{
-                nameseller: req.user.tbl_userdetail.name
+                SellerId: findSeller.id
             }
         })
         .then((data) => {
@@ -36,16 +40,20 @@
         });
     };
 
-    exports.create = (req, res) =>{
-        db.tbl_sellproducts.create({
-            nameseller: req.body.nameseller,
-            serial_number: req.body.serial,
+    exports.create = async (req, res) =>{
+       let findSeller = await db.tbl_userdetail.findOne({
+        where: {
+            UserId: req.decoded.iduser
+        }
+       })
+        await db.tbl_sellproducts.create({
             productname: req.body.productname,
             productprice: req.body.productnumber,
             productnumber: req.body.productnumber,
             productdetail: req.body.productdetail,
             productstatus: req.body.productstatus,
             productimg: 'xxx.jpg',
+            SellerId: findSeller.id
         })
         .then((data ) =>{
             res.status(200).json({
@@ -60,15 +68,19 @@
     };
 
     exports.update = (req, res ) => {
+        let findSeller = db.tbl_userdetail.findOne({
+            where: {
+                UserId: req.decoded.iduser
+            }
+           })
         db.tbl_sellproducts.update  (
             {
-                nameseller: req.body.nameseller,
-                serial_number: req.body.serial,
                 productname: req.body.productname,
                 productprice: req.body.productprice,
                 productnumber: req.body.productnumber,
                 productdetail: req.body.productdetail,
-                productstatus: req.body.productstatus
+                productstatus: req.body.productstatus,
+                SellerId: findSeller.id
         },
         {
             where:{

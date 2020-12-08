@@ -3,14 +3,14 @@ const {
   hashPassword,
   sendTokenResponse,
   matchPassword,
-} = require("../../utils/auth");
+} = require("../../utils/authCustomer");
 const {
   customerRegisterValidation,
   customerLoginValidation,
   customerChangePasswordValidation,
   customerProfileValidation,
 } = require("../../utils/validation");
-const { uuid } = require('uuidv4');
+const { uuid } = require("uuidv4");
 const moment = require("moment");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
@@ -196,10 +196,12 @@ exports.updatePassword = async (req, res) => {
 exports.estimated = async (req, res) => {
   const SHIPMENT = {
     normal: {
+      name: "EMS",
       price: 25,
       days: 5,
     },
     express: {
+      name: "Kerry Express",
       price: 40,
       days: 3,
     },
@@ -208,7 +210,11 @@ exports.estimated = async (req, res) => {
     let estimated = moment()
       .add(shipmentOption.days, "d")
       .format("dddd MMMM Do");
-    return { estimated, price: shipmentOption.price };
+    return {
+      name: shipmentOption.name,
+      estimated,
+      price: shipmentOption.price,
+    };
   }
   let shipment;
   if (req.body.shipment === "normal") {
@@ -227,7 +233,7 @@ exports.payment = (req, res) => {
   if (req.body.token.error) {
     return res.status(500).json({
       success: false,
-      message: 'ไม่พบข้อมูลบัตรเครดิต กรุณาทำรายการใหม่อีกครั้ง',
+      message: "ไม่พบข้อมูลบัตรเครดิต กรุณาทำรายการใหม่อีกครั้ง",
     });
   }
   let totalPrice = Math.round(req.body.totalPrice * 100);
@@ -246,20 +252,21 @@ exports.payment = (req, res) => {
         currency: "thb",
         customer: source.customer,
       });
-    }).then(async (charge) => {
+    })
+    .then(async (charge) => {
       //console.log('from charge',charge)
       const order = await db.CustomerOrder.create({
         totalQuantity: parseInt(req.body.totalQuantity),
         totalPrice: parseInt(req.body.totalPrice),
         deliveryAddress: parseInt(req.body.deliveryAddress),
-        CustomerId: req.decoded.iduser
-      })
+        CustomerId: req.decoded.iduser,
+      });
       const orderNo = await db.CustomerTransaction.create({
         paymentToken: charge.id,
-        orderNo: 'IFP' + '_' + uuid().toString().substring(0, 8),
-        CustomerOrderId: order.id
-      })
-      console.log(order)
+        orderNo: "IFP" + "_" + uuid().toString().substring(0, 8),
+        CustomerOrderId: order.id,
+      });
+      console.log(order);
       let cart = req.body.cart;
       cart.forEach((product) => {
         quantity = parseInt(product.quantity);
@@ -271,14 +278,13 @@ exports.payment = (req, res) => {
           price: price,
           CustomerOrderId: order.id,
         });
-      })
+      });
       let delivery = db.CustomerDelivery.create({
         deliveryProvider: req.body.deliveryProvider,
         estimatedDelivery: req.body.estimatedDelivery,
         orderStatus: "Order",
-        CustomerOrderId: order.id
+        CustomerOrderId: order.id,
       });
-
     })
     .then(async (charge) => {
       //order.owner = req.decoded.iduser;

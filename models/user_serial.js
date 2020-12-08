@@ -5,7 +5,7 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class serial extends Model {
     static associate(models) {
-      //
+
     }
   };
   serial.init({

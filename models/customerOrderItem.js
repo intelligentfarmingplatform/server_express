@@ -14,6 +14,12 @@ module.exports = (sequelize, DataTypes) => {
           allowNull: false,
       },
   });
+  CustomerOrderItem.belongsTo(models.tbl_userdetail, {
+    foreignKey: {
+      name: "SellerId",
+      allowNull: false,
+    },
+  });
   };
   return CustomerOrderItem;
 };

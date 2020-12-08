@@ -2,12 +2,11 @@ const router = require("express").Router();
 const CustomerController = require("../../controllers/customers/customerController");
 const OrderController = require("../../controllers/customers/orderController");
 const AddressController = require("../../controllers/customers/addressController");
-const { protect } = require("../../utils/auth");
+const { protect } = require("../../utils/authCustomer");
 
 router.post("/shipment", CustomerController.estimated);
 router.post("/", CustomerController.create);
 router.post("/login", CustomerController.login);
-
 
 //required token
 router.use(protect);
@@ -20,12 +19,14 @@ router.delete("/address/:id", AddressController.deleteAddress);
 //customer section
 router.put("/edit/profile", CustomerController.editProfile);
 router.get("/orders", OrderController.orderTracking);
-router.post("/payment", CustomerController.payment);
+router.post("/makeorder", OrderController.createOrder);
+router.post("/payment", OrderController.omisePayment);
+router.post("/truepayment", OrderController.omiseTrueWalletPayment);
+//router.post("/payment", CustomerController.payment);
 router.put("/", CustomerController.updatePassword);
 router.get("/me/profile", CustomerController.me);
 // router.get("/", CustomerController.findAll);
 // router.get("/:id", CustomerController.findOne);
-
 
 //router.put("/:id", CustomerController.update);
 
