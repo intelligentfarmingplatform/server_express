@@ -1,14 +1,20 @@
 const db = require("../models");
 
 exports.findOne = (req, res) => {
-    db.tbl_settingpump.findByPk(req.params.id)
-    .then((data) => {
-        res.status(200).json({
-            statusCode: 200,
-            message: "Data in Found",
-            data:data
-        })
-    })
+    console.log(req.body);
+    // db.tbl_settingpump.findAll({
+    //     include:[db.tbl_userserial],
+    //     where:{
+    //         serial_id: req.body.serial
+    //     }
+    // })
+    // .then((data) => {
+    //     res.status(200).json({
+    //         statusCode: 200,
+    //         message: "Data in Found",
+    //         data:data
+    //     })
+    // })
 };
 
 exports.update = (req, res ) => {

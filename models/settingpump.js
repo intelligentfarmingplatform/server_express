@@ -10,20 +10,31 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      models.tbl_settingpump.belongsTo(models.tbl_userserial, {
+        foreignKey: {
+          name: "serial_id",
+          allowNull: false,
+        },
+      });
+      models.tbl_settingpump.belongsTo(models.User, {
+        foreignKey: {
+          name: "user_id",
+          allowNull: false,
+        },
+      });
     }
   };
   settingpump.init({
     temp: DataTypes.DOUBLE,
     humi: DataTypes.INTEGER,
+    light_int: DataTypes.INTEGER,
     ec: DataTypes.DOUBLE,
+    ph: DataTypes.DOUBLE,
     water_level: DataTypes.DOUBLE,
     pump_a: DataTypes.TINYINT(1),
     pump_b: DataTypes.TINYINT(1),
     pump_c: DataTypes.TINYINT(1),
     pump_d: DataTypes.TINYINT(1),
-    status: DataTypes.STRING,
-    serial: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'tbl_settingpump',
