@@ -11,12 +11,12 @@ module.exports = (sequelize, DataTypes) => {
     serial_number: DataTypes.INTEGER,
     temp: DataTypes.DOUBLE,
     humi: DataTypes.INTEGER,
-    ec: DataTypes.FLOAT,
-    light_int: DataTypes.INTEGER,
-    pump_a: DataTypes.STRING,
-    pump_b: DataTypes.STRING,
-    pump_c: DataTypes.STRING,
-    pump_d: DataTypes.STRING,
+    ec: DataTypes.DOUBLE,
+    water_level: DataTypes.DOUBLE,
+    pump_a: DataTypes.TINYINT(1),
+    pump_b: DataTypes.TINYINT(1),
+    pump_c: DataTypes.TINYINT(1),
+    pump_d: DataTypes.TINYINT(1),
 
   }, {
     sequelize,
