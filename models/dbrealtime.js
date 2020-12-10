@@ -10,11 +10,21 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      models.tbl_dbRealtime.belongsTo(models.tbl_userserial, {
+        foreignKey: {
+          name: "serial_id",
+          allowNull: false,
+        },
+      });
+      models.tbl_dbRealtime.belongsTo(models.User, {
+        foreignKey: {
+          name: "user_id",
+          allowNull: false,
+        },
+      });
     }
   };
   dbrealtime.init({
-    serial_number: DataTypes.STRING,
     temp: DataTypes.DOUBLE,
     humi: DataTypes.INTEGER,
     light_int: DataTypes.INTEGER,

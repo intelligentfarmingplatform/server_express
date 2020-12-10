@@ -5,10 +5,21 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class dblist extends Model {
     static associate(models) {
+      models.tbl_dbList.belongsTo(models.tbl_userserial, {
+        foreignKey: {
+          name: "serial_id",
+          allowNull: false,
+        },
+      });
+      models.tbl_dbList.belongsTo(models.User, {
+        foreignKey: {
+          name: "user_id",
+          allowNull: false,
+        },
+      });
     }
   };
   dblist.init({
-    serial_number: DataTypes.INTEGER,
     temp: DataTypes.DOUBLE,
     humi: DataTypes.INTEGER,
     light_int: DataTypes.INTEGER,

@@ -4,7 +4,7 @@ const dbrealtimeController = require("../controllers/dbrealtime");
 const { protect } = require("../utils/auth");
 
 router.use(protect);
-router.get("/", dbrealtimeController.findAll);
+router.post("/", dbrealtimeController.findOne);
 // router.post("/", dbrealtimeController.dbrealtime);
 // router.get("/status/:id", dbrealtimeController.findstatus);
 // router.delete("/img/:id", dbrealtime.deleteimg);
