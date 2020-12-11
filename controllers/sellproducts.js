@@ -200,7 +200,9 @@
     };
 
     exports.showproduct = (req,res) => {
-        db.tbl_sellproducts.findAll()
+        db.tbl_sellproducts.findAll({
+            include:[db.tbl_userdetail]
+        })
         .then((data) => {
             res.status(200).json({
                 statusCode: 200,

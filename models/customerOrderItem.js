@@ -20,6 +20,24 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
   });
+  CustomerOrderItem.belongsTo(models.tbl_sellproducts, {
+    foreignKey: {
+      name: "ProductId",
+      allowNull: false,
+    },
+  });
+  CustomerOrderItem.belongsTo(models.CustomerDelivery, {
+    foreignKey: {
+      name: "DeliveryId",
+      allowNull: false,
+    },
+  });
+  CustomerOrderItem.belongsTo(models.CustomerAddress, {
+    foreignKey: {
+      name: "AddressId",
+      allowNull: false,
+    },
+  });
   };
   return CustomerOrderItem;
 };

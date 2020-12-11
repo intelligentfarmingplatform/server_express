@@ -18,9 +18,6 @@ module.exports = (sequelize, DataTypes) => {
           CustomerOrder.hasMany(models.CustomerTransaction, {
             onDelete: "cascade",
           });
-          CustomerOrder.hasOne(models.CustomerAddress, {
-            onDelete: "cascade",
-          });
     };
     return CustomerOrder;
 };

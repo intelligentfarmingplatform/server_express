@@ -51,6 +51,28 @@ exports.changestatus = (req, res) => {
     });
 };
 
+exports.ShowDeliveryAddress = async (req, res) => {
+  try {
+    const findAddress = await db.CustomerAddress.findOne({
+      include: [db.Customer.scope("withoutPassword")],
+      where: {
+        id: req.params.addressId,
+      },
+    });
+    if (findAddress) {
+      res.json({
+        success: true,
+        deliveryAddress: findAddress,
+      });
+    }
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
 exports.ShowOrder = async (req, res) => {
   // console.log(req.user);
   try {
@@ -61,41 +83,33 @@ exports.ShowOrder = async (req, res) => {
       },
     });
     const findSeller = await findUser.tbl_userdetail;
-    console.log(findSeller)
+    console.log(findSeller);
     const findOrderItem = await db.CustomerOrderItem.findAll({
+      include: [db.tbl_sellproducts,db.CustomerDelivery,db.CustomerAddress,db.CustomerOrder],
       where: {
-        SellerId: findSeller.id,
+        SellerId: req.decoded.iduser
       },
     });
-    let findDelivery = findOrderItem.map((item) => {
-      item.CustomerOrderId;
-      console.log(item.CustomerOrderId);
-      return item.CustomerOrderId;
+    const findTransaction = findOrderItem.map((order) => {
+      return order.CustomerOrderId;
     });
-    let Item = await db.CustomerOrderItem.findAll({
-      include: [db.CustomerOrder],
-      where: {
-        CustomerOrderId: findDelivery,
-        SellerId: findSeller.id,
-      },
-    });
-    let findOrder = await db.CustomerOrder.findAll({
-        include: [db.CustomerOrderItem,db.CustomerDelivery],
-        where: {
-          id: findDelivery,
-
-        },
-      });
-
+   
+    const foundTransaction = await db.CustomerTransaction.findAll({
+      where:{
+        CustomerOrderId: findTransaction
+      }
+    })
     if (!findOrderItem.length) {
-      return res.status(204).json({
+      return res.status(200).json({
         success: false,
         message: "ยังไม่มีการสั่งซื้อ",
       });
     }
     res.json({
       success: true,
-      order: findOrder,
+      order: findOrderItem,
+      transaction:foundTransaction
+     
     });
   } catch (err) {
     res.status(500).json({

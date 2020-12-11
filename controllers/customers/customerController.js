@@ -277,6 +277,7 @@ exports.payment = (req, res) => {
           quantity: quantity,
           price: price,
           CustomerOrderId: order.id,
+          ProductId: cartitem,
         });
       });
       let delivery = db.CustomerDelivery.create({

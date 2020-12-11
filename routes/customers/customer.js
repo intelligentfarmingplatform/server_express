@@ -12,6 +12,7 @@ router.post("/login", CustomerController.login);
 router.use(protect);
 //address section
 router.get("/address", AddressController.address);
+router.get("/address/:AddressId", AddressController.findAddressById);
 router.post("/address", AddressController.createAddress);
 router.put("/address/:id", AddressController.editAddress);
 router.put("/address/set/:set/default", AddressController.setDefault);

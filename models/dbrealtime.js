@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
     light_int: DataTypes.INTEGER,
     ec: DataTypes.DOUBLE,
     ph: DataTypes.DOUBLE,
-    water_level: DataTypes.DOUBLE,
+    water_level: DataTypes.DOUBLE,  
     pump_a: DataTypes.TINYINT(1),
     pump_b: DataTypes.TINYINT(1),
     pump_c: DataTypes.TINYINT(1),

@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     );
     CustomerDelivery.associate = (models) => {
         CustomerDelivery.belongsTo(models.CustomerOrder, {
-        foreighKey: {
+        foreignKey: {
           allowNull: false,
         },
       });

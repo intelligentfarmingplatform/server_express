@@ -5,6 +5,7 @@ var omise = require("omise")({
   omiseVersion: "2019-05-29",
 });
 const { uuid } = require("uuidv4");
+const { findOne } = require("../order");
 exports.orderTracking = async (req, res) => {
   try {
     let listOrder = await db.CustomerOrder.findAll({
@@ -13,30 +14,25 @@ exports.orderTracking = async (req, res) => {
         db.CustomerDelivery,
         db.CustomerTransaction,
       ],
-      where: { CustomerId: req.decoded.iduser},
+      where: { CustomerId: req.decoded.iduser },
     });
-    
-    let findSellerOrder = listOrder.map((order)=>{
-      return order.CustomerOrderItems
-    })
-    let findSeller = findSellerOrder.map((order)=>{
-      findOrder = order.map((o)=>{
-       
-        return o.SellerId
-       
-      })
-      return findOrder
-      
-    })
-    
+
+    let findSellerOrder = listOrder.map((order) => {
+      return order.CustomerOrderItems;
+    });
+    let findSeller = findSellerOrder.map((order) => {
+      findOrder = order.map((o) => {
+        return o.SellerId;
+      });
+      return findOrder;
+    });
+
     let findSerialOwn = await db.CustomerOrderItem.findAll({
-      include: [
-        db.tbl_userdetail,
-      ],
+      include: [db.tbl_userdetail],
       where: {
         SellerId: findSeller,
-      }
-    })
+      },
+    });
     if (listOrder.length == 0) {
       return res.status(204).json({
         success: false,
@@ -70,25 +66,29 @@ exports.createOrder = async (req, res) => {
       orderNo: "IFP" + "_" + uuid().toString().substring(0, 8),
       CustomerOrderId: order.id,
     });
-    cart.forEach((product) => {
+    await cart.forEach(async (product) => {
       quantity = parseInt(product.quantity);
       cartitem = product.id;
       price = parseInt(product.productprice);
       seller = parseInt(product.SellerId);
-      db.CustomerOrderItem.create({
+      let delivery = await db.CustomerDelivery.create({
+        deliveryProvider: req.body.deliveryProvider,
+        estimatedDelivery: req.body.estimatedDelivery,
+        orderStatus: "Pending",
+        CustomerOrderId: order.id,
+      })
+      await db.CustomerOrderItem.create({
         cartItem: cartitem,
         quantity: quantity,
         price: price,
         CustomerOrderId: order.id,
-        SellerId: seller
+        SellerId: seller,
+        ProductId: cartitem,
+        DeliveryId: parseInt(deliveryAddress),
+        AddressId: parseInt(deliveryAddress)
       });
-    });
-    let delivery = db.CustomerDelivery.create({
-      deliveryProvider: req.body.deliveryProvider,
-      estimatedDelivery: req.body.estimatedDelivery,
-      orderStatus: "Pending",
-      CustomerOrderId: order.id,
-    });
+    })
+
     res.json({
       success: true,
       message: "Successfully made a order!",

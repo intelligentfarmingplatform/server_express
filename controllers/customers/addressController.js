@@ -23,6 +23,27 @@ exports.address = async (req, res) => {
   }
 };
 
+exports.findAddressById = async (req, res) => {
+  try {
+    let findAddress = await db.CustomerAddress.findOne({
+      where: {
+        id: req.params.AddressId,
+      },
+    });
+    if (findAddress) {
+      res.json({
+        success: true,
+        address: findAddress,
+      });
+    }
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
 exports.createAddress = async (req, res) => {
   const { error } = customerAddressValidation(req.body);
   if (error) {
