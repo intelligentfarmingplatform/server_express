@@ -23,7 +23,7 @@ const db = require("../models");
 
 exports.findOne = (req, res) => {
     // console.log(req.body);
-    db.tbl_dbList.findOne({
+    db.tbl_dbList.findAll({
         include:[db.tbl_userserial],
         where:{
             serial_id: req.body.serial
