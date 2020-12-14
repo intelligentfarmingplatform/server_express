@@ -16,7 +16,6 @@ exports.orderTracking = async (req, res) => {
       ],
       where: { CustomerId: req.decoded.iduser },
     });
-
     let findSellerOrder = listOrder.map((order) => {
       return order.CustomerOrderItems;
     });
@@ -34,7 +33,7 @@ exports.orderTracking = async (req, res) => {
       },
     });
     if (listOrder.length == 0) {
-      return res.status(204).json({
+      return res.status(200).json({
         success: false,
         message: "ยังไม่มีการสั่งซื้อ",
       });

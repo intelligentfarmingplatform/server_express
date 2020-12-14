@@ -23,4 +23,7 @@ router.post("/accountbank", UseraccountbankController.addaccountbank);
 router.put("/accountbank", UseraccountbankController.editaccountbank);
 router.delete("/accountbank/:id", UseraccountbankController.delaccountbank);
 
+router.post("/admin/addserial", UserserialController.createserial);
+router.get("/admin/serialshow", UserserialController.adminshow);
+
 module.exports = router;

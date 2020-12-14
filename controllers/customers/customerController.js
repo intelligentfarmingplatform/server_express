@@ -88,20 +88,19 @@ exports.editProfile = async (req, res) => {
     });
     if (foundUser) {
       let foundProfile = await db.CustomerProfile.findOne({
-        where: { id: foundUser.CustomerProfileId },
+        where: { CustomerId: req.decoded.iduser },
       });
       if (foundProfile) {
+        console.log(foundProfile)
         await db.CustomerProfile.update(
           {
-            displayName: req.body.displayName,
             fullName: req.body.fullName,
             phoneNumber: req.body.phoneNumber,
             sex: req.body.sex,
-            CustomerId: req.decoded.iduser,
           },
           {
             where: {
-              id: foundUser.CustomerProfileId,
+              CustomerId: req.decoded.iduser,
             },
           }
         );

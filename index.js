@@ -14,7 +14,7 @@ const dblistRoute = require("./routes/dblist");
 const dbrealtimeRoute = require("./routes/dbrealtime");
 const settingpumpRoute = require("./routes/settingpump");
 const customerRoute = require("./routes/customers/customer");
-const {success, error} = require("consola");
+const { success, error } = require("consola");
 
 const port = process.env.PORT || 3001;
 
@@ -34,12 +34,12 @@ app.use("/api/settingpump", settingpumpRoute);
 app.use("/api/customer", customerRoute);
 
 db.sequelize
-  .sync()
-  .then(() =>
-    app.listen(port, () =>
-      success({
-        message: `Example app listening at http: //localhost:${port}`,
-        badge: true,
-      })
-    )
-  );
+    .sync()
+    .then(() =>
+        app.listen(port, () =>
+            success({
+                message: `Example app listening at http: //localhost:${port}`,
+                badge: true,
+            })
+        )
+    );
