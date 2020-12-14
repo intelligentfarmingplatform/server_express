@@ -27,7 +27,7 @@ exports.orderTracking = async (req, res) => {
     });
 
     let findSerialOwn = await db.CustomerOrderItem.findAll({
-      include: [db.tbl_userdetail],
+      include: [db.tbl_userdetail,db.tbl_sellproducts],
       where: {
         SellerId: findSeller,
       },

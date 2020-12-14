@@ -11,17 +11,20 @@ exports.addserial = async(req, res) => {
             serial: serial
         }
     })
+
     if (!checkserialsystem) {
         return res.status(400).json({
             statusCode: 400,
             message: "ไม่มีSerialนี้ในระบบ"
         })
     }
+
     let checkserial = await db.tbl_userserial.findOne({
         where: {
             serial: serial
         }
     })
+
     if (checkserial) {
         return res.status(400).json({
             statusCode: 400,
@@ -36,9 +39,16 @@ exports.addserial = async(req, res) => {
             serial: serial
         }
     })
+
+    let createserial = await db.tbl_userserial.create({
+        name: name,
+        serial: serial,
+        UserId: req.user.id
+    })
+
     const Adddashbord = await db.tbl_dbRealtime.create({
-        serial_id: AddSerialUser.id,
-        user_id: AddSerialUser.UserId,
+        serial_id: createserial.id,
+        user_id: createserial.UserId,
         temp: 0,
         humi: 0,
         light_int: 0,
@@ -50,9 +60,10 @@ exports.addserial = async(req, res) => {
         pump_c: 0,
         pump_d: 0
     })
+
     const settingsystem = await db.tbl_settingpump.create({
-        serial_id: AddSerialUser.id,
-        user_id: AddSerialUser.UserId,
+        serial_id: createserial.id,
+        user_id: createserial.UserId,
         temp: 0,
         humi: 0,
         ec: 0,
@@ -63,23 +74,14 @@ exports.addserial = async(req, res) => {
         pump_c: 0,
         pump_d: 0
     })
-    db.tbl_userserial.create({
-            name: name,
-            serial: serial,
-            UserId: req.user.id
-        })
-        .then((data) => {
-            res.status(200).json({
-                statusCode: 201,
-                message: "User Created Successfully",
-                data: data,
-            });
-        })
-        .catch((err) => {
-            res.status(500).send(err);
-        });
 
+    res.status(200).json({
+        statusCode: 201,
+        message: "User Created Successfully",
+        data: createserial
+    });
 }
+
 exports.editserial = async(req, res) => {
     console.log(req.body);
     let { name, id } = req.body;
@@ -105,20 +107,28 @@ exports.editserial = async(req, res) => {
 }
 
 exports.delserial = async(req, res) => {
-    await db.tbl_userserial.destroy({
-            where: {
-                id: req.params.id
-            }
-        }).then(data => {
-            res.status(200).json({
-                statusCode: 204,
-                message: "ลบข้อมูลSerialสำเร็จ",
-                data: data,
-            });
-        })
-        .catch((err) => {
-            res.status(500).send(err);
-        })
+    await db.tbl_settingpump.destroy({
+        include: [db.tbl_userserial],
+        where: {
+            serial_id: req.params.id
+        }
+    })
+    await db.tbl_dbRealtime.destroy({
+        include: [db.tbl_userserial],
+        where: {
+            serial_id: req.params.id
+        }
+    })
+    let delserial = await db.tbl_userserial.destroy({
+        where: {
+            id: req.params.id
+        }
+    })
+    res.status(200).json({
+        statusCode: 204,
+        message: "ลบ Serial สำเร็จ",
+        data: delserial,
+    });
 }
 
 exports.createserial = async(req, res) => {

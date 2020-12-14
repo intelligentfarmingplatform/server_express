@@ -123,7 +123,7 @@ const RegisterValidation = (data) => {
     const schema = Joi.object({
         username: Joi.string()
             .min(6)
-            .regex(/^[a-z0-9]+$/)
+            .regex(/^[_@/a-z0-9]+$/)
             .required()
             .messages({
                 "string.pattern.base": `Username จะต้องเป็นภาษาอังกฤษและตัวเลขเท่านั้น`,
@@ -133,7 +133,7 @@ const RegisterValidation = (data) => {
             }),
         password: Joi.string()
             .min(8)
-            .regex(/^[_@/ a-z0-9]+$/)
+            .regex(/^[_@/a-z0-9]+$/)
             .required()
             .messages({
                 "string.pattern.base": `รหัสผ่านจะต้องเป็นภาษาอังกฤษและตัวเลขหรือตัวอักษรพิเศษเท่านั้น`,
@@ -170,7 +170,7 @@ const LoginValidation = (data) => {
             }),
         password: Joi.string()
             .min(8)
-            .regex(/^[_@/ a-z0-9]+$/)
+            .regex(/^[_@/ A-Za-z0-9]+$/)
             .required()
             .messages({
                 "string.pattern.base": `รหัสผ่านจะต้องเป็นภาษาอังกฤษและตัวเลขหรือตัวอักษรพิเศษเท่านั้น`,

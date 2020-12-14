@@ -70,7 +70,7 @@ exports.sing = async(req, res) => {
             password: password,
         });
         const CreateDetailUser = await db.tbl_userdetail.create({
-            name: '',
+            name: username,
             email: '',
             address: '',
             detail: '',
@@ -79,7 +79,7 @@ exports.sing = async(req, res) => {
             UserId: CreateUser.id
         });
         const AddSerialUser = await db.tbl_userserial.create({
-            name: '',
+            name: 'กรุณาเปลี่ยนชื่อ',
             serial: serial,
             UserId: CreateUser.id
         })
