@@ -2,7 +2,7 @@
     "development": {
         "username": "root",
         "password": "itcmtc2020",
-        "database": "ifp_database",
+        "database": "ifp_test",
         "host": "maims.cmtc.ac.th",
         "dialect": "mysql"
     },

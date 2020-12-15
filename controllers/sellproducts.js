@@ -27,7 +27,13 @@
     };
 
     exports.findOne = (req, res) => {
-        db.tbl_sellproducts.findByPk(req.params.id)
+        db.tbl_sellproducts.findOne({
+            include:[db.tbl_userdetail],
+            where:{
+                // UserId: req.decoded.iduser,
+                id: req.params.id
+            }
+        })
             .then((data) => {
                 res.status(200).json({
                     statusCode: 200,
@@ -97,18 +103,12 @@
     };
 
     exports.update = (req, res) => {
-        let findSeller = db.tbl_userdetail.findOne({
-            where: {
-                UserId: req.decoded.iduser
-            }
-        })
         db.tbl_sellproducts.update({
                 productname: req.body.productname,
                 productprice: req.body.productprice,
                 productnumber: req.body.productnumber,
                 productdetail: req.body.productdetail,
                 productstatus: req.body.productstatus,
-                SellerId: findSeller.id
             }, {
                 where: {
                     id: req.params.id,
@@ -119,7 +119,6 @@
                     statusCode: 201,
                     message: "User Update Successfully",
                     data: data,
-                    id: req.params.id
 
                 });
             })
