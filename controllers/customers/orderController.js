@@ -211,7 +211,7 @@ exports.omiseTrueWalletPayment = async (req, res) => {
     const charge = await omise.charges.create({
       amount: totalPrice * 100,
       currency: "thb",
-      return_uri: "http://maims.cmtc.ac.th:3333",
+      return_uri: "http://maims.cmtc.ac.th",
       source: token,
     });
     let makePayment = await db.CustomerTransaction.findOne({
